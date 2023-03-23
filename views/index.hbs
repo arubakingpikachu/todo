@@ -1,1 +1,7 @@
-<h2>Hello world! 這是 index</h2>
+<ul>
+  {{#each todos}}<!--todos從app.js拿來的 -->
+    <li>
+      {{this.name}}
+    </li>
+  {{/each}}
+</ul>
