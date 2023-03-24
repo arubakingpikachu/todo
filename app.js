@@ -64,7 +64,7 @@ app.post('/todos',(req,res)=>{
     .catch(error => console.log(error))
 })
 
-app.post('',(req,res)=>{
+app.post('/todos/:id/edit',(req,res)=>{
   const id = req.params.id
   const name = req.body.name
   return Todo.findById(id)
@@ -74,6 +74,14 @@ app.post('',(req,res)=>{
     })
   .then(()=>res.redirect('/todos/${id}'))
   .catch(error => console.log(error))
+})
+
+app.post('/todos/:id/delete',(req,res)=>{
+  const id=req.params.id
+  return Todo.findById(id)
+   .then(todo=>todo.remove())
+   .then(()=>res.redirect())
+   .catch(error => console.log(error))
 })
 
 // 設定 port 3000
