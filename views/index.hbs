@@ -2,9 +2,10 @@
 <ul>
   {{#each todos}}<!--todos從app.js拿來的 -->
     <li>
+      <input type="checkbox" name="isDone" {{#if this.isDone }} checked {{/if}} disabled>
       {{this.name}}
-      <a href="./todos/{{this._id}}">detail</a><!--_id=mongoose給每筆 todo 資料的編號，實際上是一串16進位碼，如641af57e33031239684f3867-->
-      <a href="./todos/{{this._id}}/edit">edit</a><!--通往edit頁面的按鈕-->
+      <a href="/todos/{{this._id}}">detail</a><!--_id=mongoose給每筆 todo 資料的編號，實際上是一串16進位碼，如641af57e33031239684f3867-->
+      <a href="/todos/{{this._id}}/edit">edit</a><!--通往edit頁面的按鈕-->
       <form action="./todos/{{ this._id }}/delete"method="POST"style="display: inline;">
         <button type="submit">delete</button>
       </form>
