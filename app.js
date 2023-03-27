@@ -4,6 +4,7 @@ const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars')
 const Todo=require('./models/todo')
 const bodyParser=require('body-parser')
+const methodOverride = require('method-override')
 
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
@@ -14,6 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express()
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }) // 設定連線到 mongoDB。mongoose.connect其實直接用連線字串就好，但因為連線字串裡有密碼，所以改用環境中載入；process.env 是 Node.js 提供的一個介面，可以調用宣告在系統層的環境變數。
 
+app.use(methodOverride('_method'))//參數 _method=method-override 的路由覆蓋機制，只要我們在網址上使用 query string (也就是 ?) 帶入這組指定字串，就可以把路由覆蓋掉
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
 
@@ -65,7 +67,7 @@ app.post('/todos',(req,res)=>{
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/edit',(req,res)=>{
+app.put('/todos/:id',(req,res)=>{
   const id = req.params.id
   const {name,isDone} = req.body//解構賦值
   return Todo.findById(id)
@@ -78,7 +80,7 @@ app.post('/todos/:id/edit',(req,res)=>{
   .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/delete',(req,res)=>{
+app.delete('/todos/:id',(req,res)=>{
   const id=req.params.id
   return Todo.findById(id)
    .then(todo=>todo.remove())
